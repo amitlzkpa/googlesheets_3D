@@ -1,3 +1,26 @@
+
+const CLIENT_ID =
+  "904025292181-o39na2eg3pvgl728930kffjnm8phd741.apps.googleusercontent.com";
+const API_KEY = "AIzaSyBliuOX-kQgC1Yf9wVOOtgKwaWjr0yVF08";
+
+// Discovery doc URL for APIs used by the quickstart
+const DISCOVERY_DOC =
+  "https://sheets.googleapis.com/$discovery/rest?version=v4";
+
+// Authorization scopes required by the API; multiple scopes can be
+// included, separated by spaces.
+const SCOPES = "https://www.googleapis.com/auth/spreadsheets.readonly";
+
+
+
+let spreadsheetId = "1n1iT5Aor9N7Ftf39831nYI5jeZqG3Za4sYwMX-VXdWM";
+let readRange = "Parametric Relations!B5:D15";
+
+
+// ---------------------------------
+
+
+
 /**
  * Callback after api.js is loaded.
  */
@@ -25,7 +48,7 @@ function gisLoaded() {
   tokenClient = google.accounts.oauth2.initTokenClient({
     client_id: CLIENT_ID,
     scope: SCOPES,
-    callback: "" // defined later
+    callback: ""
   });
   gisInited = true;
   maybeEnableButtons();
@@ -48,9 +71,9 @@ function handleAuthClick() {
     if (resp.error !== undefined) {
       throw resp;
     }
+    document.getElementById("authorize_button").style.visibility = "hidden";
     document.getElementById("signout_button").style.visibility = "visible";
-    document.getElementById("authorize_button").innerText = "Refresh";
-    await testSpreadsheet();
+    document.getElementById("refreshviz_button").style.visibility = "visible";
   };
 
   if (gapi.client.getToken() === null) {
@@ -72,18 +95,17 @@ function handleSignoutClick() {
     google.accounts.oauth2.revoke(token.access_token);
     gapi.client.setToken("");
     document.getElementById("content").innerText = "";
-    document.getElementById("authorize_button").innerText = "Authorize";
+    document.getElementById("authorize_button").style.visibility = "visible";
     document.getElementById("signout_button").style.visibility = "hidden";
+    document.getElementById("refreshviz_button").style.visibility = "hidden";
   }
 }
 
-let spreadsheetId = "1n1iT5Aor9N7Ftf39831nYI5jeZqG3Za4sYwMX-VXdWM";
-let readRange = "Parametric Relations!F5:G15";
 /**
  * Spreadsheet to open.
  * https://docs.google.com/spreadsheets/d/1n1iT5Aor9N7Ftf39831nYI5jeZqG3Za4sYwMX-VXdWM/edit
  */
-async function testSpreadsheet() {
+async function refreshViz() {
   let response;
   try {
     // Fetch first 10 files
@@ -108,18 +130,6 @@ async function testSpreadsheet() {
   document.getElementById("content").innerText = output;
 }
 
-const CLIENT_ID =
-  "904025292181-o39na2eg3pvgl728930kffjnm8phd741.apps.googleusercontent.com";
-const API_KEY = "AIzaSyBliuOX-kQgC1Yf9wVOOtgKwaWjr0yVF08";
-
-// Discovery doc URL for APIs used by the quickstart
-const DISCOVERY_DOC =
-  "https://sheets.googleapis.com/$discovery/rest?version=v4";
-
-// Authorization scopes required by the API; multiple scopes can be
-// included, separated by spaces.
-const SCOPES = "https://www.googleapis.com/auth/spreadsheets.readonly";
-
 let tokenClient;
 let gapiInited = false;
 let gisInited = false;
@@ -129,8 +139,10 @@ async function main() {
   gapiLoaded();
   gisLoaded();
 
-  document.getElementById("authorize_button").style.visibility = "hidden";
   document.getElementById("signout_button").style.visibility = "hidden";
+  document.getElementById("refreshviz_button").style.visibility = "hidden";
+  document.getElementById("span_spreadsheetId").innerText = `SpreadsheetId: ${spreadsheetId}`;
+  document.getElementById("span_readRange").innerText = `ReadRange: ${readRange}`;
 }
 
 document.addEventListener("DOMContentLoaded", main);

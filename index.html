@@ -1,24 +1,23 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Sheets API Trial</title>
+    <title>Google Sheets 3D</title>
     <meta charset="utf-8" />
   </head>
   <body>
-    <h2>Google Sheets API Trial</h2>
+    <h2>Google Sheets 3D</h2>
     <div>
-      <input
-        type="text"
-        placeholder="1n1iT5AoWMnYI5jeZr9N7Ftf39831sYwMIrVXdqG3Za4"
-        name="spreadsheetId"
-      />
+      <span id="span_spreadsheetId"></span>
       <br />
-      <input type="text" placeholder="Sheet Name!A1:D4" name="readRange" />
+      <span id="span_readRange"></span>
     </div>
+
+    <br />
 
     <!--Add buttons to initiate auth sequence and sign out-->
     <button id="authorize_button" onclick="handleAuthClick()">Authorize</button>
     <button id="signout_button" onclick="handleSignoutClick()">Sign Out</button>
+    <button id="refreshviz_button" onclick="refreshViz()">Refresh</button>
 
     <pre id="content" style="white-space: pre-wrap;"></pre>
 
